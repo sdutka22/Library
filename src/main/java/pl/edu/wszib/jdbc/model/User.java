@@ -1,7 +1,8 @@
-package pl.edu.wszib.jdbc;
+package pl.edu.wszib.jdbc.model;
 
 public class User {
     private int id;
+
     private String login;
     private String password;
     private Role role;
@@ -49,4 +50,15 @@ public class User {
         USER,
         ADMIN
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", role=" + role +
+                '}';
+    }
+
 }
