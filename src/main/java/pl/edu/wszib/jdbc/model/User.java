@@ -1,25 +1,46 @@
 package pl.edu.wszib.jdbc.model;
 
-public class User {
-    private int id;
+import java.util.UUID;
 
+public class User {
+    private String id = UUID.randomUUID().toString();
+    private String name;
+    private String surname;
     private String login;
     private String password;
     private Role role;
 
-    public User(int id, String login, String password, Role role) {
-        this.id = id;
+    public User(){}
+    public User(String name, String surname, String login, String password, Role role) {
+        this.name = name;
+        this.surname = surname;
         this.login = login;
         this.password = password;
         this.role = role;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getLogin() {
@@ -53,12 +74,13 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("User Information:\n");
+        sb.append("Name: ").append(name).append("\n");
+        sb.append("Surname: ").append(surname).append("\n");
+        sb.append("login: ").append(login).append("\n");
+        sb.append("Password: ").append(password).append("\n");
+        sb.append("Role: ").append(role).append("\n");
+        return sb.toString();
     }
-
 }

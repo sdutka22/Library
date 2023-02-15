@@ -1,31 +1,22 @@
 package pl.edu.wszib.jdbc.model;
 
 public class Book {
-    private int id;
     private String title;
     private String author;
     private String ISBN;
     private Boolean rent;
-    private String rentDate;
     private String returnDate;
 
-    public Book(int id, String title, String author, String ISBN, String rentDate, String returnDate) {
-        this.id = id;
+    private String userId;
+
+    public Book(String title, String author, String ISBN) {
         this.title = title;
         this.author = author;
         this.ISBN = ISBN;
         this.rent = false;
-        this.rentDate = rentDate;
-        this.returnDate = returnDate;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
+    public Book(){}
 
     public String getTitle() {
         return title;
@@ -51,20 +42,12 @@ public class Book {
         this.ISBN = ISBN;
     }
 
-    public Boolean getRent() {
+    public Boolean isRent() {
         return rent;
     }
 
     public void setRent(Boolean rent) {
         this.rent = rent;
-    }
-
-    public String getRentDate() {
-        return rentDate;
-    }
-
-    public void setRentDate(String rentDate) {
-        this.rentDate = rentDate;
     }
 
     public String getReturnDate() {
@@ -75,16 +58,27 @@ public class Book {
         this.returnDate = returnDate;
     }
 
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", ISBN='" + ISBN + '\'' +
-                ", rent=" + rent +
-                ", rentDate='" + rentDate + '\'' +
-                ", returnDate='" + returnDate + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Book Information:\n");
+        sb.append("Title: ").append(title).append("\n");
+        sb.append("Author: ").append(author).append("\n");
+        sb.append("ISBN: ").append(ISBN).append("\n");
+        sb.append("Is Rented: ").append(rent).append("\n");
+        if(rent){
+            sb.append("Rented By: ").append(userId).append("\n");
+        }
+        return sb.toString();
     }
 }

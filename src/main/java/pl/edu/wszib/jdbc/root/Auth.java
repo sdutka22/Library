@@ -1,7 +1,7 @@
 package pl.edu.wszib.jdbc.root;
 
-import pl.sdutka.electronic.shop.model.User;
-import pl.sdutka.electronic.shop.database.UserDB;
+import pl.edu.wszib.jdbc.model.User;
+import pl.edu.wszib.jdbc.database.UserDB;
 import org.apache.commons.codec.digest.DigestUtils;
 
 public class Auth {

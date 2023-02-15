@@ -1,18 +1,16 @@
 package pl.edu.wszib.jdbc.root;
 
 import pl.edu.wszib.jdbc.model.User;
-import pl.sdutka.electronic.shop.gui.GUI;
-
-import java.util.Objects;
+import pl.edu.wszib.jdbc.database.BookDB;
+import pl.edu.wszib.jdbc.gui.GUI;
 import java.util.Scanner;
 
-import static pl.sdutka.electronic.shop.gui.GUI.showLoginRegister;
-
+import static pl.edu.wszib.jdbc.gui.GUI.showLoginRegister;
 
 public class Root {
     private static final Scanner scanner = new Scanner(System.in);
-    final ProductDB productDB = ProductDB.getInstance();
-    final pl.sdutka.electronic.shop.root.Auth auth = pl.sdutka.electronic.shop.root.Auth.getInstance();
+    final BookDB bookDB = BookDB.getInstance();
+    final pl.edu.wszib.jdbc.root.Auth auth = pl.edu.wszib.jdbc.root.Auth.getInstance();
     final GUI gui = GUI.getInstance();
     private static final Root instance = new Root();
     private Root() {
@@ -28,10 +26,10 @@ public class Root {
             switch(showLoginRegister()){
                 case "1" -> {
                     User user = GUI.readNewLoginAndPassword();
-                    if(!pl.sdutka.electronic.shop.root.Auth.validate(user)){
+                    if(!pl.edu.wszib.jdbc.root.Auth.validate(user)){
                         System.out.println("Wrong login or password entered. Valid login and password consist of at least 5 letters,");
                     }else{
-                        if(pl.sdutka.electronic.shop.root.Auth.doesExist(user, this.auth.userDB)) {
+                        if(pl.edu.wszib.jdbc.root.Auth.doesExist(user, this.auth.userDB)) {
                             System.out.println("An account with the given login already exists");
                         }else{
                             this.auth.userDB.addNewUser(user);
@@ -56,34 +54,41 @@ public class Root {
 
             while (isRunning) {
                 switch (this.gui.showMenu()) {
-                    case "1" -> GUI.listOfDevices();
-                    case "2" -> GUI.showBuyResult(productDB.buyDevice(GUI.readProduct()));
-                    case "3" -> {
+                    case "1" -> GUI.listOfDevices(); //List of Books
+                    case "2" -> GUI.showBuyResult(bookDB.rentBook(GUI.readBook()));
+
+                    case "3" -> { //logout
                         this.auth.logOut();
                         isRunning = false;
                     }
-                    case "4" -> {
+                    case "4" -> { //Adding new books into our list
                         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-                            productDB.increaseAmountOfExistingDevice(GUI.readAmountOfProductToBuy());
+                            bookDB.addNewBook(GUI.readNewBookData());
                         }
                     }
-                    case "5" -> {
-                        if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-                            productDB.addNewDevice(GUI.readNewDeviceData());
-                        }
-                    }
-                    case "6" -> {
+                    case "5" -> { //Setting user as Admin
                         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
                             System.out.println("Podaj login");
                             String login = scanner.nextLine();
-                            this.auth.userDB.setUserAsAdmin(login, GUI.readUsertoAdmin());
+                            this.auth.userDB.setUserAsAdmin(login);
                         }
                     }
-                    case "7" -> {
+                    case "6" -> { //Listing existing users
                         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
                             GUI.listOfUsers();
                         }
                     }
+                    case "7" -> {
+                        if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
+                            GUI.listOfRentedBooks(); //List of rented books
+                        }
+                    }
+                    case "8" -> {
+                        if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
+                            GUI.listOfOverDueBooks(); //List of overdue books
+                        }
+                    }
+
 
                     default -> System.out.println("Wrong choose!! choose again");
                 }

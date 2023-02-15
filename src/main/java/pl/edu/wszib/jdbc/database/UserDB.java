@@ -6,11 +6,11 @@ import java.util.List;
 
 public class UserDB {
     private static final UserDB instance = new UserDB();
-    private final List<User> users= new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
 
     private UserDB(){
-        users.add(new User("admin", "eb0468abcd9f88e9844fd140fbb6acff", User.Role.ADMIN));
-        users.add(new User("janusz", "6fff9bb96e12805ea3ccb8ec27e8206f", User.Role.USER));
+        users.add(new User("admin", "admin", "admin", "eb0468abcd9f88e9844fd140fbb6acff", User.Role.ADMIN));
+        users.add(new User("janusz", "janusz", "janusz", "6fff9bb96e12805ea3ccb8ec27e8206f", User.Role.USER));
     }
 
     public void getUser() {
@@ -24,9 +24,9 @@ public class UserDB {
                 .orElse(null);
     }
 
-    public User setUserAsAdmin(String login, String iD) {
+    public User setUserAsAdmin(String login) {
         return this.users.stream()
-                .filter(user -> user.getLogin().equals(login) && user.getiD().equals(iD))
+                .filter(user -> user.getLogin().equals(login))
                 .findFirst()
                 .map(user -> {
                     user.setRole(User.Role.ADMIN);
