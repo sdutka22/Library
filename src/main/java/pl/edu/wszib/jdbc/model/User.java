@@ -1,7 +1,4 @@
 package pl.edu.wszib.jdbc.model;
-
-import java.util.UUID;
-
 public class User {
     private Integer id;
     private String name;

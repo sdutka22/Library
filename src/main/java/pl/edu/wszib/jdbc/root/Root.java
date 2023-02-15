@@ -1,7 +1,7 @@
 package pl.edu.wszib.jdbc.root;
 
 import pl.edu.wszib.jdbc.model.User;
-import pl.edu.wszib.jdbc.database.BookDB;
+import pl.edu.wszib.jdbc.database.BookDAO;
 import pl.edu.wszib.jdbc.gui.GUI;
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ import static pl.edu.wszib.jdbc.gui.GUI.showLoginRegister;
 
 public class Root {
     private static final Scanner scanner = new Scanner(System.in);
-    final BookDB bookDB = BookDB.getInstance();
+    final BookDAO bookDAO = BookDAO.getInstance();
     final pl.edu.wszib.jdbc.root.Auth auth = pl.edu.wszib.jdbc.root.Auth.getInstance();
     final GUI gui = GUI.getInstance();
     private static final Root instance = new Root();
@@ -55,7 +55,7 @@ public class Root {
                 switch (this.gui.showMenu()) {
                     case "1" -> GUI.listOfAllBooks(); //List of all Books
                     case "2" -> GUI.findBook(); //find a book
-                    case "3" -> GUI.showBuyResult(bookDB.rentBook(GUI.readBook(),this.auth.getLoggedUser()));
+                    case "3" -> bookDAO.rentBook(GUI.readBook(),this.auth.getLoggedUser());
                     case "4" -> GUI.listOfRentedBooks(); //List of rented books;
                     case "5" -> GUI.listOfOverDueBooks(); //List of overdue books
                     case "6" -> { //logout
@@ -64,7 +64,7 @@ public class Root {
                     }
                     case "7" -> { //Adding new books into our list
                         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-                            bookDB.addNewBook(GUI.readNewBookData());
+                            bookDAO.addNewBook(GUI.readNewBookData());
                         }
                     }
                     case "8" -> { //Setting user as Admin
@@ -79,9 +79,6 @@ public class Root {
                             GUI.listOfUsers();
                         }
                     }
-
-
-
                     default -> System.out.println("Wrong choose!! choose again");
                 }
             }

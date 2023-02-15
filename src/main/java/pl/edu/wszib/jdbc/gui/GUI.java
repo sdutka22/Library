@@ -1,14 +1,12 @@
 package pl.edu.wszib.jdbc.gui;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import pl.edu.wszib.jdbc.database.BookDB;
 import pl.edu.wszib.jdbc.database.UserDAO;
-import pl.edu.wszib.jdbc.database.UserDB;
-import pl.edu.wszib.jdbc.model.User;
+import pl.edu.wszib.jdbc.database.BookDAO;
 import pl.edu.wszib.jdbc.model.Book;
+import pl.edu.wszib.jdbc.model.User;
 import pl.edu.wszib.jdbc.root.Auth;
 
-import javax.sound.midi.Soundbank;
 import java.util.Scanner;
 
 public class GUI {
@@ -54,24 +52,18 @@ public class GUI {
     }
 
     public static void listOfAllBooks(){
-        BookDB bookDB = BookDB.getInstance();
-        bookDB.getAllbooks();
+        BookDAO bookDAO = BookDAO.getInstance();
+        bookDAO.getAllBooks();
     }
     public static void findBook(){
-        BookDB bookDB = BookDB.getInstance();
+        BookDAO bookDAO = BookDAO.getInstance();
         System.out.println("Please enter book title or author or ISBN");
-        bookDB.printAvailableBooks(scanner.nextLine());
+        bookDAO.printAvailableBooks(scanner.nextLine());
     }
 
     public static String readBook() {
         System.out.println("Please enter book title or author or ISBN");
         return scanner.nextLine();
-    }
-
-    public static void showBuyResult(boolean result) {
-        if(!result) {
-            System.out.println("This book does not exist or it is rent now");
-        }
     }
 
     public static Book readNewBookData() {
@@ -83,17 +75,17 @@ public class GUI {
         System.out.println("ISBN");
         String ISBN = scanner.nextLine();
 
-        return new Book(title, author, ISBN);
+        return new Book(title, author, ISBN, false);
     }
 
     public static void listOfRentedBooks() {
-        BookDB bookDB = BookDB.getInstance();
-        bookDB.printRentedBooks();
+        BookDAO bookDAO = BookDAO.getInstance();
+        bookDAO.printRentedBooks();
     }
 
     public static void listOfOverDueBooks() {
-        BookDB bookDB = BookDB.getInstance();
-        bookDB.printOverdueBooks();
+        BookDAO bookDAO = BookDAO.getInstance();
+        bookDAO.printOverdueBooks();
     }
 
     public static void listOfUsers(){
