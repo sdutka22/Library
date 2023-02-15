@@ -1,11 +1,10 @@
 package pl.edu.wszib.jdbc.database;
 
 import pl.edu.wszib.jdbc.model.*;
-
+import pl.edu.wszib.jdbc.model.User;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -27,6 +26,11 @@ public class BookDB {
         books.add(new Book("The Hunger Games", "Suzanne Collins", "0439023483"));
     }
 
+    public void getAllbooks(){
+        books.stream().map(Book::toString).forEach(System.out::println);
+        System.out.println("\n");
+    }
+
     public void printAvailableBooks(String identifier) {
         String regex = ".*" + identifier.toLowerCase() + ".*";
         this.books.stream()
@@ -46,6 +50,7 @@ public class BookDB {
                 System.out.println("ISBN: " + book.getISBN());
                 System.out.println("Rented By: " + book.getUserId());
                 System.out.println();
+                hasRentedBooks = true;
             }
         }
         if (!hasRentedBooks) {
@@ -69,9 +74,7 @@ public class BookDB {
         }
     }
 
-    public boolean rentBook(String identifier) {
-        User user = new User();
-        Scanner scanner = new Scanner(System.in);
+    public boolean rentBook(String identifier, User user) {
         for (Book book : this.books) {
             if ((book.getTitle().equals(identifier) || book.getAuthor().equals(identifier) || book.getISBN().equals(identifier)) && !book.isRent()) {
                 book.setRent(true);

@@ -2,10 +2,13 @@ package pl.edu.wszib.jdbc.gui;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import pl.edu.wszib.jdbc.database.BookDB;
+import pl.edu.wszib.jdbc.database.UserDAO;
 import pl.edu.wszib.jdbc.database.UserDB;
 import pl.edu.wszib.jdbc.model.User;
 import pl.edu.wszib.jdbc.model.Book;
 import pl.edu.wszib.jdbc.root.Auth;
+
+import javax.sound.midi.Soundbank;
 import java.util.Scanner;
 
 public class GUI {
@@ -25,32 +28,36 @@ public class GUI {
     public String showMenu(){
         System.out.println("1. List of Books");
 
-        System.out.println("2. Rent a Book");
+        System.out.println("2. Find a book");
 
-        System.out.println("3. Log Out");
+        System.out.println("3. Rent a Book");
+
+        System.out.println("4. List of rented books");
+
+        System.out.println("5. List of overdue books");
+
+        System.out.println("6. Log Out");
 
         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-            System.out.println("4. Add new book");
+            System.out.println("7. Add new book");
         }
 
         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-            System.out.println("5. Set User as Admin");
+            System.out.println("8. Set User as Admin");
         }
 
         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-            System.out.println("6. List of users and admins");
-        }
-
-        if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-            System.out.println("7. List of rented books");
-        }
-        if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-            System.out.println("8. List of overdue books");
+            System.out.println("9. List of users and admins");
         }
 
         return scanner.nextLine();
     }
-    public static void listOfDevices(){//list of Books
+
+    public static void listOfAllBooks(){
+        BookDB bookDB = BookDB.getInstance();
+        bookDB.getAllbooks();
+    }
+    public static void findBook(){
         BookDB bookDB = BookDB.getInstance();
         System.out.println("Please enter book title or author or ISBN");
         bookDB.printAvailableBooks(scanner.nextLine());
@@ -90,8 +97,8 @@ public class GUI {
     }
 
     public static void listOfUsers(){
-        UserDB userDB = UserDB.getInstance();
-        userDB.getUser();
+        UserDAO userDAO = UserDAO.getInstance();
+        userDAO.getUser();
         System.out.println("\n");
     }
 
@@ -114,6 +121,7 @@ public class GUI {
         user.setLogin(scanner.nextLine());
         System.out.println("Password:");
         user.setPassword(DigestUtils.md5Hex(scanner.nextLine() + Auth.getInstance().getSeed()));
+        user.setRole(User.Role.USER);
         return user;
     }
 

@@ -3,7 +3,7 @@ package pl.edu.wszib.jdbc.model;
 import java.util.UUID;
 
 public class User {
-    private String id = UUID.randomUUID().toString();
+    private Integer id;
     private String name;
     private String surname;
     private String login;
@@ -19,11 +19,11 @@ public class User {
         this.role = role;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

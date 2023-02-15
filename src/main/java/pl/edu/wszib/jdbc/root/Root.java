@@ -14,7 +14,6 @@ public class Root {
     final GUI gui = GUI.getInstance();
     private static final Root instance = new Root();
     private Root() {
-
     }
     public void run(){
 
@@ -29,10 +28,10 @@ public class Root {
                     if(!pl.edu.wszib.jdbc.root.Auth.validate(user)){
                         System.out.println("Wrong login or password entered. Valid login and password consist of at least 5 letters,");
                     }else{
-                        if(pl.edu.wszib.jdbc.root.Auth.doesExist(user, this.auth.userDB)) {
+                        if(pl.edu.wszib.jdbc.root.Auth.doesExist(user, this.auth.userDAO)) {
                             System.out.println("An account with the given login already exists");
                         }else{
-                            this.auth.userDB.addNewUser(user);
+                            this.auth.userDAO.addNewUser(user);
                         }
                     }
                 }
@@ -54,40 +53,33 @@ public class Root {
 
             while (isRunning) {
                 switch (this.gui.showMenu()) {
-                    case "1" -> GUI.listOfDevices(); //List of Books
-                    case "2" -> GUI.showBuyResult(bookDB.rentBook(GUI.readBook()));
-
-                    case "3" -> { //logout
+                    case "1" -> GUI.listOfAllBooks(); //List of all Books
+                    case "2" -> GUI.findBook(); //find a book
+                    case "3" -> GUI.showBuyResult(bookDB.rentBook(GUI.readBook(),this.auth.getLoggedUser()));
+                    case "4" -> GUI.listOfRentedBooks(); //List of rented books;
+                    case "5" -> GUI.listOfOverDueBooks(); //List of overdue books
+                    case "6" -> { //logout
                         this.auth.logOut();
                         isRunning = false;
                     }
-                    case "4" -> { //Adding new books into our list
+                    case "7" -> { //Adding new books into our list
                         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
                             bookDB.addNewBook(GUI.readNewBookData());
                         }
                     }
-                    case "5" -> { //Setting user as Admin
+                    case "8" -> { //Setting user as Admin
                         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
                             System.out.println("Podaj login");
                             String login = scanner.nextLine();
-                            this.auth.userDB.setUserAsAdmin(login);
+                            this.auth.userDAO.setUserAsAdmin(login);
                         }
                     }
-                    case "6" -> { //Listing existing users
+                    case "9" -> { //Listing existing users
                         if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
                             GUI.listOfUsers();
                         }
                     }
-                    case "7" -> {
-                        if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-                            GUI.listOfRentedBooks(); //List of rented books
-                        }
-                    }
-                    case "8" -> {
-                        if(this.auth.getLoggedUser() != null && this.auth.getLoggedUser().getRole() == User.Role.ADMIN) {
-                            GUI.listOfOverDueBooks(); //List of overdue books
-                        }
-                    }
+
 
 
                     default -> System.out.println("Wrong choose!! choose again");
