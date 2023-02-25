@@ -51,7 +51,7 @@ public class BookDAO {
     public void printAvailableBooks(String identifier) {
         try {
             String regex = "%" + identifier.toLowerCase() + "%";
-            String sql = "SELECT * FROM tbook WHERE rent = false AND (LOWER(title) LIKE ? OR LOWER(author) LIKE ? OR LOWER(ISBN) LIKE ?)";
+            String sql = "SELECT * FROM tbook WHERE (LOWER(title) LIKE ? OR LOWER(author) LIKE ? OR LOWER(ISBN) LIKE ?)";
             PreparedStatement ps = this.connection.prepareStatement(sql);
             ps.setString(1, regex);
             ps.setString(2, regex);
