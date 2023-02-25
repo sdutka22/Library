@@ -1,0 +1,10 @@
+pl/edu/wszib/jdbc/database/BookDAO.class
+pl/edu/wszib/jdbc/model/User.class
+pl/edu/wszib/jdbc/root/Auth.class
+pl/edu/wszib/jdbc/App.class
+pl/edu/wszib/jdbc/App3.class
+pl/edu/wszib/jdbc/model/Book.class
+pl/edu/wszib/jdbc/gui/GUI.class
+pl/edu/wszib/jdbc/model/User$Role.class
+pl/edu/wszib/jdbc/root/Root.class
+pl/edu/wszib/jdbc/database/UserDAO.class

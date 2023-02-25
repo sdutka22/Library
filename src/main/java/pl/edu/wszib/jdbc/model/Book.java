@@ -1,24 +1,17 @@
 package pl.edu.wszib.jdbc.model;
 
 public class Book {
-    private Integer id;
     private String title;
     private String author;
     private String ISBN;
     private Boolean rent;
+
+    public Book(){}
     public Book(String title, String author, String ISBN, Boolean rent) {
         this.title = title;
         this.author = author;
         this.ISBN = ISBN;
         this.rent = rent;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getTitle() {

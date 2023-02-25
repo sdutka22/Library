@@ -15,7 +15,7 @@ public class Auth {
     public void authentication(User user) {
         User userFromDB = this.userDAO.findByLogin(user.getLogin());
         if(userFromDB != null && userFromDB.getPassword().equals(DigestUtils.md5Hex(user.getPassword() + this.seed))) {
-            this.loggedUser = userFromDB;
+            loggedUser = userFromDB;
         }
     }
 

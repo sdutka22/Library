@@ -55,7 +55,14 @@ public class Root {
                 switch (this.gui.showMenu()) {
                     case "1" -> GUI.listOfAllBooks(); //List of all Books
                     case "2" -> GUI.findBook(); //find a book
-                    case "3" -> bookDAO.rentBook(GUI.readBook(),this.auth.getLoggedUser());
+                    case "3" -> {
+                        if(bookDAO.rentBook(GUI.readBook(),this.auth.getLoggedUser())){
+                            System.out.println("Book rented successfully");
+                        }else{
+                            System.out.println("Book not available for rent.");
+                        }
+
+                    }
                     case "4" -> GUI.listOfRentedBooks(); //List of rented books;
                     case "5" -> GUI.listOfOverDueBooks(); //List of overdue books
                     case "6" -> { //logout

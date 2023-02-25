@@ -6,7 +6,7 @@ import pl.edu.wszib.jdbc.root.Auth;
 
 public class App3 {
     public static void main(String[] args) {
-        String hash = DigestUtils.md5Hex("admin" + Auth.getInstance().getSeed());
+        String hash = DigestUtils.md5Hex("1234" + Auth.getInstance().getSeed());
 
         System.out.println(hash);
 

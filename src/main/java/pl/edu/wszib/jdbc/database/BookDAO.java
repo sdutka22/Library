@@ -56,6 +56,7 @@ public class BookDAO {
             ps.setString(1, regex);
             ps.setString(2, regex);
             ps.setString(3, regex);
+
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 Book book = new Book(
@@ -69,32 +70,28 @@ public class BookDAO {
             throw new RuntimeException(e);
         }
     }
-    public void addNewBook(Book book) {
+
+    public Book addNewBook(Book book) {
         try {
             String sql = "INSERT INTO tbook (title, author, ISBN, rent) VALUES (?, ?, ?, ?)";
-            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement ps = connection.prepareStatement(sql);
 
             ps.setString(1, book.getTitle());
             ps.setString(2, book.getAuthor());
             ps.setString(3, book.getISBN());
             ps.setBoolean(4, book.isRent());
 
-            int rowsAffected = ps.executeUpdate();
-            if (rowsAffected == 0) {
-                throw new SQLException("Adding book failed, no rows affected.");
-            }
+            ps.executeUpdate();
 
-            ResultSet generatedKeys = ps.getGeneratedKeys();
-            if (generatedKeys.next()) {
-                book.setId(generatedKeys.getInt(1));
-            } else {
-                throw new SQLException("Adding book failed, no ID obtained.");
-            }
         } catch (SQLException e) {
             throw new RuntimeException("Error adding book: " + e.getMessage(), e);
         }
+        return book;
     }
-    public void rentBook(String identifier, User user) {
+
+
+    public boolean rentBook(String identifier, User user) {
+
         try {
             String bookQuery = "SELECT * FROM tbook WHERE (title = ? OR author = ? OR ISBN = ?) AND rent = ?";
             PreparedStatement bookStatement = this.connection.prepareStatement(bookQuery);
@@ -105,7 +102,7 @@ public class BookDAO {
             ResultSet bookResult = bookStatement.executeQuery();
 
             if (!bookResult.next()) {
-                System.out.println("Book not available for rent.");
+                return false;
             }
 
             String ISBN = bookResult.getString("ISBN");
@@ -126,7 +123,7 @@ public class BookDAO {
             libraryStatement.setString(1, login);
             libraryStatement.setString(2, ISBN);
             libraryStatement.setString(3, returnDate.format(DateTimeFormatter.ISO_LOCAL_DATE));
-            int rowsUpdated = libraryStatement.executeUpdate();
+            libraryStatement.executeUpdate();
 
             String updateQuery = "UPDATE tbook SET rent = ? WHERE ISBN = ?";
             PreparedStatement updateStatement = this.connection.prepareStatement(updateQuery);
@@ -134,6 +131,7 @@ public class BookDAO {
             updateStatement.setString(2,  ISBN);
             updateStatement.executeUpdate();
 
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -190,4 +188,6 @@ public class BookDAO {
             throw new RuntimeException(e);
         }
     }
+
+
 }
